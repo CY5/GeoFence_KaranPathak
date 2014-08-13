@@ -1,0 +1,158 @@
+<script type="text/javascript">
+/*${userId}*/
+function addToTable() {
+		flag = 0
+		var table = jQuery('.dataTable');
+		//console.log("${tableData}");
+
+		%for obj in tableData:
+			var vechicleID="${obj['Vehicle_Id']}";
+			vechicleID=vechicleID.trim();
+			if(vechicleID.indexOf(' ') >= 0){
+				alert("error");
+			}
+			console.log(vechicleID);
+			var details=JSON.parse('${obj["Details"]}'); 
+			console.log(details);
+			var data="<tr><td class='gn-icon delete' data-geofid='${obj['Geofence_Id']}'><span>Delete</span></td>";
+			data += '<td> <a href="#gMap" class="fence_data" data-geomet=${obj["Details"]}>${obj["Geofence_Name"]}</a></td>';
+			data += "<td class='vid'>"+vechicleID+"</td>";
+			if(details["type"]===undefined){
+				data += '<td>NA</td>';	
+			}
+			else{
+				data += '<td class="type"> '+details["type"]+'</td>';
+			}
+			if(details["radius"]===undefined){
+				data += '<td>NA</td></tr>';	
+			}
+			else{
+				data+='<td class="radius"> '+details["radius"]+'</td></tr>';
+			}
+			//console.log(typeof jsonObject);
+			/*var vechid="${obj['Vehicle_Id']}";
+			vechid=vechid.trim();
+            fence_data['vechicleID'].push(vechid);
+            fence_data['Geofence_Name'].push("${obj['Geofence_Name']}");*/
+           
+            
+			console.log(details);
+			table.append(data)
+
+		%endfor
+		//console.log(data);
+}
+	
+function getvehiclename(){
+    %for item in vehicleList:
+    var vechicleID='${item["value"]}';
+    vechicleID=vechicleID.trim();
+        jQuery('<option>').val(vechicleID).text("${item['display']}").appendTo('.cars');
+    	console.log('${item["value"]}');
+    %endfor
+
+}
+</script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
+
+<div class="tabs">
+	<div id="gMap">
+		<div class="head-sidebar">
+				<a href="#back" class="gn-icon gn-icon-back"><span>back</span></a>
+				<label style="padding-left: 50px;vertical-align: top;">Select Shape</label>
+				<div>
+					<a class="gn-icon gn-icon-circle"><span>Circle</span></a>
+				</div>
+				<div>
+					<a class="gn-icon gn-icon-polygon"><span>Polygon</span></a>
+				</div>
+				<div>
+					<a class="gn-icon gn-icon-rectangle"><span>Rectangle</span></a>
+				</div>
+		</div>
+		<div id="googleMap">	
+		</div>
+		<div class="sidebar">
+			<div class="head-sidebar">
+				GeoFence Form
+			</div>
+			<div>
+					<form id="GeoForm">
+						<ul class="gf">
+							<li class="fID">
+								<label>GeoFence Id:</label>
+								<input placeholder="GeoFence Id" type="text" class="gn-fId">
+							</li>
+							<li>
+								<label>GeoFence Name:</label>
+									<input placeholder="GeoFence Name" type="text" class="gn-fence">
+							</li>
+							<li>
+								<label style="padding-left: 10px;">
+									Geofence Type:
+								</label>
+								<select class="shape" style="width:60%;">
+									<option default>Select type</option>
+									<option value="CIRCLE">Circle</option>
+									<option value="RECTANGLE">Rectangle</option>
+									<option value="POLYGON">Polygon</option>
+								</select>
+							</li>
+							<li class="li_add">
+								<label style="padding-left: 50px;">Address:</label>
+								<textarea class="address" readonly></textarea>
+							</li>
+							<li class="li_radius">
+								<label style="padding-left: 52px;">Radius:</label>
+								<input type="text" class="radius"/>
+							</li>
+							<li>
+								<label style="padding-left: 16px;">Select Vehicle:</label>
+									<select class="cars" multiple style="width: 60%;">
+									</select>
+							</li>
+							<li style="display:inline;">
+								<a href="javascript:void(0)" class="gn-icon gn-icon-save"><span>Save</span></a>
+							<!--	<a href="javascript:void(0)" class="gn-icon gn-icon-update"><span>Update</span></a>-->
+								<a href="javascript:void(0)" class="gn-icon gn-icon-cancel"><span>Cancel</span></a>
+							</li>
+					</form>
+			</div>
+		</div>
+		<div class="switch">
+			>>
+		</div>
+	</div>
+	<div id="back">
+		<div class="head-sidebar">
+			<a href="#gMap" class="gn-icon gn-icon-add"><span>Add</span></a>
+		</div>
+		<div id="dialog-confirm"></div>
+		<div style="position: relative;max-width: 1140px;margin: 0 auto;">
+		<table id="tabledata" class="display dataTable">
+				<thead>
+					<tr>
+						<th>
+						</th>
+						<th>
+							Geofence_Name
+						</th>
+						<th>
+							Vehicle_Id
+						</th>
+						<th>
+							Type
+						</th>
+						<th>
+							Radius
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+		</table>
+		</div>
+	</div>
+</div>
+	
