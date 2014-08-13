@@ -1,0 +1,56 @@
+<div
+%if containerId :
+id="${containerId}"
+%endif
+
+class="authSettings ${containerClass or ''}"
+>
+
+<div class="heading">
+	<div class="role">Designation</div>
+	<div class="users">Users</div>
+	<div class="permissions">Permissions</div>
+</div>
+
+<div class="body">
+
+	%for role in tableData['roles'] :
+	<div class="row" >
+		<div class="role" data-roleName="${role['name']}">${role['description']}</div>
+
+		<div class="users">
+			%for user in tableData['users'] :
+			<div>
+				<input type="checkbox"
+				%if user['username'] in role['users'] :
+				checked="checked"
+				%endif
+				value="${user['username']}"
+				>${user['username']}</input>
+			</div>
+			%endfor
+		</div>
+
+		<div class="permissions">
+			%for permission in tableData['permissions'] :
+			<div>
+				<input type="checkbox"
+				%if permission['name'] in role['permissions'] :
+				checked="checked"
+				%endif
+				value="${permission['name']}"
+				>${permission['description']}</input>
+			</div>
+			%endfor
+		</div>
+	</div>
+	%endfor
+
+	<div class="buttonContainer">
+		<button class="submit" id="save">Save</button>
+		<button class="submit" id="cancel">Cancel</button>
+	</div>
+
+</div>
+</div>
+
